@@ -1,15 +1,17 @@
-//lib/src/core/styles/orientation_styles.dart
 import 'package:flutter/material.dart';
 
 class OrientationStyles {
-  static const double portraitPadding = 16.0;
-  static const double landscapePadding = 24.0;
+  static double getPadding(BuildContext context) {
+    return MediaQuery.of(context).orientation == Orientation.portrait ? 16.0 : 24.0;
+  }
 
-  static const double portraitSpacing = 16.0;
-  static const double landscapeSpacing = 20.0;
+  static double getSpacing(BuildContext context) {
+    return MediaQuery.of(context).orientation == Orientation.portrait ? 16.0 : 20.0;
+  }
 
-  static const double portraitLogoSize = 100.0;
-  static const double landscapeLogoSize = 80.0;
+  static double getLogoSize(BuildContext context) {
+    return MediaQuery.of(context).orientation == Orientation.portrait ? 100.0 : 80.0;
+  }
 
-  // Puedes agregar más estilos específicos de orientación aquí
+  // Puedes agregar más métodos según sea necesario
 }
