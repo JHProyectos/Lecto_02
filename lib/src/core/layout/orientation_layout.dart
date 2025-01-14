@@ -1,9 +1,8 @@
-//lib/src/core/layout/orientation_layout.dart
 import 'package:flutter/material.dart';
 
 class OrientationLayout extends StatelessWidget {
-  final Widget Function(BuildContext) portraitLayout;
-  final Widget Function(BuildContext) landscapeLayout;
+  final Widget Function(BuildContext, BoxConstraints) portraitLayout;
+  final Widget Function(BuildContext, BoxConstraints) landscapeLayout;
 
   const OrientationLayout({
     Key? key,
@@ -15,9 +14,13 @@ class OrientationLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return OrientationBuilder(
       builder: (context, orientation) {
-        return orientation == Orientation.portrait
-            ? portraitLayout(context)
-            : landscapeLayout(context);
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return orientation == Orientation.portrait
+                ? portraitLayout(context, constraints)
+                : landscapeLayout(context, constraints);
+          },
+        );
       },
     );
   }
