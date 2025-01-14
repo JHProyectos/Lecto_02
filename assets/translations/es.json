@@ -1,62 +1,6 @@
 {
-  "login": {
-    "title": "Iniciar Sesión",
-    "email": "Correo electrónico",
-    "password": "Contraseña",
-    "login_button": "Iniciar Sesión",
-    "google_login": "Iniciar Sesión con Google",
-    "language": "Idioma",
-    "email_required": "El correo electrónico es obligatorio",
-    "password_required": "La contraseña es obligatoria",
-    "invalid_credentials": "Credenciales inválidas",
-    "register": "Registrarse"
-  },
-  "home": {
-    "title": "Inicio",
-    "welcome": "¡Bienvenido, {name}!",
-    "what_to_do": "¿Qué te gustaría hacer hoy?",
-    "upload_pdf": "Subir PDF",
-    "text_to_speech": "Texto a Voz",
-    "my_audio_files": "Mis Archivos de Audio",
-    "language": "Idioma",
-    "logout": "Cerrar Sesión",
-    "theme": "Tema"
-  },
-  "upload": {
-    "title": "Subir PDF",
-    "drag_file_here": "Arrastra un archivo PDF aquí",
-    "select_pdf": "Seleccionar PDF",
-    "upload_pdf": "Subir PDF",
-    "success_title": "Éxito",
-    "success_message": "El archivo PDF se ha cargado correctamente.",
-    "error_title": "Error",
-    "error_message": "Hubo un problema al cargar el archivo PDF.",
-    "file_size_limit": "El tamaño máximo del archivo es de 10 MB",
-    "invalid_file_type": "Por favor, selecciona un archivo PDF válido"
-  },
-  "processing": {
-    "title": "Procesando PDF",
-    "processing_file": "Procesando: {0}",
-    "progress_percentage": "{0}%",
-    "go_to_playback": "Ir a reproducción",
-    "error_title": "Error de Procesamiento",
-    "error_message": "Hubo un problema al procesar el archivo PDF."
-  },
-  "playback": {
-    "title": "Reproducción de Audio",
-    "file": "Archivo: {0}",
-    "progress_percentage": "{0}%",
-    "play": "Reproducir",
-    "pause": "Pausar",
-    "stop": "Detener",
-    "speed": "Velocidad",
-    "discard_changes_title": "Descartar Cambios",
-    "discard_changes_message": "¿Estás seguro de que quieres descartar los cambios no guardados?",
-    "premium_feature": "Característica Premium",
-    "premium_message": "Esta función está disponible solo para usuarios premium."
-  },
   "common": {
-    "ok": "OK",
+    "ok": "Aceptar",
     "cancel": "Cancelar",
     "discard": "Descartar",
     "save": "Guardar",
@@ -65,21 +9,93 @@
     "loading": "Cargando...",
     "retry": "Reintentar"
   },
+  "login": {
+    "title": "Iniciar sesión",
+    "form": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "email_required": "El correo electrónico es obligatorio",
+      "password_required": "La contraseña es obligatoria"
+    },
+    "actions": {
+      "login_button": "Iniciar sesión",
+      "google_login": "Iniciar sesión con Google",
+      "register": "Registrarse"
+    },
+    "errors": {
+      "invalid_credentials": "Credenciales inválidas"
+    }
+  },
+  "home": {
+    "title": "Inicio",
+    "welcome": "¡Bienvenido, {name}!",
+    "what_to_do": "¿Qué te gustaría hacer hoy?",
+    "actions": {
+      "upload_pdf": "Subir PDF",
+      "text_to_speech": "Texto a voz",
+      "my_audio_files": "Mis archivos de audio"
+    }
+  },
+  "upload": {
+    "title": "Subir PDF",
+    "instructions": {
+      "drag_file_here": "Arrastra un archivo PDF aquí",
+      "select_pdf": "Seleccionar PDF"
+    },
+    "actions": {
+      "upload_pdf": "Subir PDF"
+    },
+    "messages": {
+      "success_title": "Éxito",
+      "success_message": "El archivo PDF se ha subido correctamente.",
+      "error_title": "Error",
+      "error_message": "Hubo un problema al subir el archivo PDF."
+    },
+    "validations": {
+      "file_size_limit": "El tamaño máximo del archivo es 10 MB",
+      "invalid_file_type": "Por favor, selecciona un archivo PDF válido"
+    }
+  },
+  "processing": {
+    "title": "Procesando PDF",
+    "processing_file": "Procesando: {0}",
+    "progress_percentage": "{0}%",
+    "go_to_playback": "Ir a reproducción",
+    "error_title": "Error de procesamiento",
+    "error_message": "Hubo un problema al procesar el archivo PDF."
+  },
+  "playback": {
+    "title": "Reproducción de audio",
+    "file": "Archivo: {0}",
+    "progress_percentage": "{0}%",
+    "actions": {
+      "play": "Reproducir",
+      "pause": "Pausar",
+      "stop": "Detener",
+      "speed": "Velocidad"
+    },
+    "messages": {
+      "discard_changes_title": "Descartar cambios",
+      "discard_changes_message": "¿Estás seguro de que quieres descartar los cambios no guardados?",
+      "premium_feature": "Función Premium",
+      "premium_message": "Esta función está disponible solo para usuarios premium."
+    }
+  },
   "settings": {
     "title": "Configuración",
     "language": "Idioma",
     "theme": "Tema",
-    "dark_mode": "Modo Oscuro",
-    "light_mode": "Modo Claro",
+    "dark_mode": "Modo oscuro",
+    "light_mode": "Modo claro",
     "account": "Cuenta",
     "premium": "Premium",
     "upgrade": "Actualizar a Premium",
-    "logout": "Cerrar Sesión"
+    "logout": "Cerrar sesión"
   },
   "errors": {
     "general": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
     "network": "Error de conexión. Por favor, verifica tu conexión a internet.",
     "unauthorized": "No estás autorizado para realizar esta acción.",
-    "not_found": "El recurso solicitado no se ha encontrado."
+    "not_found": "El recurso solicitado no se encontró."
   }
 }
