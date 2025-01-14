@@ -94,7 +94,11 @@
   },
   "errors": {
     "general": "An error has occurred. Please try again.",
-    "network": "Connection error. Please check your internet connection.",
+    "network": "Network error. Please check your internet connection.",
+    "auth": "Authentication error. Please log in again.",
+    "validation": "Please check your input and try again.",
+    "file_upload": "Error uploading file. Please try again.",
+    "conversion": "Error converting PDF to audio. Please try again.",
     "unauthorized": "You are not authorized to perform this action.",
     "not_found": "The requested resource was not found."
   }
