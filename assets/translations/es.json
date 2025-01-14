@@ -92,9 +92,13 @@
     "upgrade": "Actualizar a Premium",
     "logout": "Cerrar sesión"
   },
-  "errors": {
+ "errors": {
     "general": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
     "network": "Error de conexión. Por favor, verifica tu conexión a internet.",
+    "auth": "Error de autenticación. Por favor, inicia sesión nuevamente.",
+    "validation": "Por favor, verifica tu entrada e intenta de nuevo.",
+    "file_upload": "Error al subir el archivo. Por favor, intenta de nuevo.",
+    "conversion": "Error al convertir PDF a audio. Por favor, intenta de nuevo.",
     "unauthorized": "No estás autorizado para realizar esta acción.",
     "not_found": "El recurso solicitado no se encontró."
   }
