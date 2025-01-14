@@ -1,3 +1,4 @@
+//lib/src/core/styles/orientation_styles.dart
 import 'package:flutter/material.dart';
 
 class OrientationStyles {
