@@ -1,39 +1,35 @@
-//lib/src/shared/utils/file_processor.dart
+//lib/src/services/pdf_service.dart
+import '../domain/entities/pdf.dart';
 
-class FileProcessor {
-  /// Procesa un archivo PDF de manera remota utilizando Firebase Cloud Functions.
+/// Servicio para manejar operaciones relacionadas con archivos PDF.
+abstract class PdfService {
+  /// Extrae el texto de un archivo PDF.
   ///
-  /// [fileName]: El nombre del archivo que se desea procesar.
+  /// [pdf] es el objeto Pdf del cual se extraerá el texto.
+  /// Retorna el texto extraído como String.
+  /// Puede lanzar una [PdfServiceException] si ocurre un error.
+  Future<String> extractText(Pdf pdf);
+
+  /// Valida la estructura de un archivo PDF.
   ///
-  /// Retorna un `Stream<double>` que emite el progreso del procesamiento del archivo,
-  /// donde el valor oscila entre 0.0 (inicio) y 1.0 (completado).
+  /// [pdf] es el objeto Pdf a validar.
+  /// Retorna true si el PDF es válido, false en caso contrario.
+  /// Puede lanzar una [PdfServiceException] si ocurre un error.
+  Future<bool> validatePdf(Pdf pdf);
+
+  /// Obtiene el número de páginas de un PDF.
   ///
-  /// Lanza excepciones si ocurre algún problema durante el procesamiento.
-  static Stream<double> processFile(String fileName) async* {
-    // Llama a la función remota 'processPdf' para iniciar el procesamiento.
-    final callable = FirebaseFunctions.instance.httpsCallable('processPdf');
-    final result = await callable.call<Map<String, dynamic>>({'fileName': fileName});
-    
-    // Obtiene el identificador de la tarea desde el resultado.
-    final taskId = result.data['taskId'] as String;
-    double progress = 0;
-    
-    // Monitorea el progreso hasta que se complete.
-    while (progress < 1) {
-      // Espera 1 segundo antes de consultar el estado nuevamente.
-      await Future.delayed(const Duration(seconds: 1));
-      
-      // Llama a la función remota 'getProcessingStatus' para obtener el progreso.
-      final statusResult = await FirebaseFunctions.instance
-          .httpsCallable('getProcessingStatus')
-          .call<Map<String, dynamic>>({'taskId': taskId});
-      
-      // Actualiza el progreso con el valor recibido.
-      progress = statusResult.data['progress'] as double;
-      
-      // Emite el valor de progreso actual.
-      yield progress;
-    }
-  }
+  /// [pdf] es el objeto Pdf del cual se obtendrá el número de páginas.
+  /// Retorna el número de páginas como int.
+  /// Puede lanzar una [PdfServiceException] si ocurre un error.
+  Future<int> getPageCount(Pdf pdf);
 }
 
+/// Excepción específica para errores en el servicio de PDF.
+class PdfServiceException implements Exception {
+  final String message;
+  PdfServiceException(this.message);
+
+  @override
+  String toString() => 'PdfServiceException: $message';
+}
