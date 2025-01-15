@@ -1,82 +1,41 @@
 //lib/src/shared/models/playback_screen_arguments.dart
-/// Modelo de argumentos para la pantalla de reproducción (`PlaybackScreen`).
-/// 
-/// Este modelo encapsula los datos necesarios para inicializar la pantalla de reproducción,
-/// como el nombre del archivo y, opcionalmente, una posición inicial de reproducción.
-class PlaybackScreenArguments {
-  /// Nombre del archivo que se reproducirá.
-  final String fileName;
+/// El modelo de `PlaybackArguments` representa los argumentos necesarios
+/// para reproducir un archivo de audio, incluyendo la URL de transmisión y la ruta de caché.
+class PlaybackArguments {
+  final String audioId;
+  final String audioName;
+  final String? streamUrl;  // URL del audio para transmisión desde la nube
+  final String? cachedPath;  // Ruta local para reproducción sin conexión
 
-  /// Posición inicial para comenzar la reproducción (opcional).
-  /// Si se proporciona, debe ser una duración no negativa.
-  final Duration? initialPosition;
+  /// Constructor del modelo `PlaybackArguments`, requiere los detalles básicos
+  /// del audio y las rutas (de la URL o de la caché).
+  PlaybackArguments({
+    required this.audioId,
+    required this.audioName,
+    this.streamUrl,  // Puede ser nula si se reproduce desde la caché
+    this.cachedPath,  // Puede ser nula si no hay archivo local disponible
+  });
 
-  /// Constructor para crear los argumentos de la pantalla de reproducción.
-  /// 
-  /// [fileName]: Nombre del archivo que se reproducirá (obligatorio).
-  /// [initialPosition]: Posición inicial para comenzar la reproducción (opcional).
-  /// 
-  /// Lanza una [ArgumentError] si [fileName] es una cadena vacía o si [initialPosition] es negativo.
-  PlaybackScreenArguments({
-    required this.fileName,
-    this.initialPosition,
-  }) {
-    if (fileName.isEmpty) {
-      throw ArgumentError('El nombre del archivo no puede estar vacío.');
+  /// Método estático que crea un `PlaybackArguments` a partir de un `AudioModel`,
+  /// eligiendo la fuente (caché o streaming) según la conectividad.
+  static Future<PlaybackArguments> fromAudioModel(AudioModel audioModel) async {
+    final bool isConnected = await AudioModel.isConnected();  // Verifica si hay conexión
+
+    // Si hay conexión, usa la URL de transmisión, sino, usa la caché
+    if (isConnected) {
+      return PlaybackArguments(
+        audioId: audioModel.id,
+        audioName: audioModel.name,
+        streamUrl: audioModel.streamUrl,
+        cachedPath: null,  // No se necesita caché si se transmite
+      );
+    } else {
+      return PlaybackArguments(
+        audioId: audioModel.id,
+        audioName: audioModel.name,
+        streamUrl: null,  // No se necesita transmisión si usamos la caché
+        cachedPath: audioModel.cachedPath,  // Se usa la ruta local si está disponible
+      );
     }
-    if (initialPosition != null && initialPosition!.isNegative) {
-      throw ArgumentError('La posición inicial no puede ser negativa.');
-    }
   }
-
-  /// Convierte el modelo a un mapa JSON.
-  /// 
-  /// Este método es útil para la serialización, por ejemplo, al pasar argumentos
-  /// entre rutas o al enviar datos a una API.
-  /// 
-  /// Retorna un [Map] con las claves 'fileName' y 'initialPosition'.
-  Map<String, dynamic> toJson() => {
-        'fileName': fileName,
-        'initialPosition': initialPosition?.inSeconds,
-      };
-
-  /// Crea un modelo a partir de un mapa JSON.
-  /// 
-  /// Este método es útil para la deserialización, por ejemplo, al recibir argumentos
-  /// de una ruta o al procesar datos de una API.
-  /// 
-  /// [json]: Un mapa que contiene los datos para crear el objeto.
-  /// 
-  /// Retorna una nueva instancia de [PlaybackScreenArguments].
-  factory PlaybackScreenArguments.fromJson(Map<String, dynamic> json) {
-    return PlaybackScreenArguments(
-      fileName: json['fileName'] as String,
-      initialPosition: json['initialPosition'] != null
-          ? Duration(seconds: json['initialPosition'] as int)
-          : null,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'PlaybackScreenArguments(fileName: $fileName, initialPosition: $initialPosition)';
-  }
-
-  /// Compara este objeto con otro para determinar si son iguales.
-  /// 
-  /// Dos [PlaybackScreenArguments] se consideran iguales si tienen el mismo
-  /// [fileName] y [initialPosition].
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PlaybackScreenArguments &&
-          runtimeType == other.runtimeType &&
-          fileName == other.fileName &&
-          initialPosition == other.initialPosition;
-
-  /// Genera un código hash para este objeto.
-  /// 
-  /// El código hash se basa en los valores de [fileName] y [initialPosition].
-  @override
-  int get hashCode => fileName.hashCode ^ initialPosition.hashCode;
 }
