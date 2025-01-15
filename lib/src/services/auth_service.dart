@@ -1,31 +1,37 @@
-class AuthenticationManager {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+//lib/src/services/auth_service.dart
+import '../domain/entities/user.dart';
 
-  Future<void> signInWithGoogle(bool isUtnStudent) async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) throw Exception('Google sign-in canceled');
+/// Servicio para manejar la autenticación de usuarios.
+abstract class AuthService {
+  /// Inicia sesión con email y contraseña.
+  ///
+  /// Retorna un [User] si la autenticación es exitosa.
+  /// Puede lanzar una [AuthServiceException] si ocurre un error.
+  Future<User> login(String email, String password);
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      await _auth.signInWithCredential(credential);
-      // Additional logic for UTN students
-    } catch (e) {
-      throw e;
-    }
-  }
+  /// Cierra la sesión del usuario actual.
+  ///
+  /// Puede lanzar una [AuthServiceException] si ocurre un error.
+  Future<void> logout();
 
-  Future<void> signInWithEmailPassword(
-      String email, String password, bool isUtnStudent) async {
-    try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // Additional logic for UTN students
-    } catch (e) {
-      throw e;
-    }
-  }
+  /// Registra un nuevo usuario.
+  ///
+  /// Retorna el [User] creado si el registro es exitoso.
+  /// Puede lanzar una [AuthServiceException] si ocurre un error.
+  Future<User> register(String name, String email, String password);
+
+  /// Obtiene el usuario actualmente autenticado.
+  ///
+  /// Retorna un [User] si hay una sesión activa, null en caso contrario.
+  /// Puede lanzar una [AuthServiceException] si ocurre un error.
+  Future<User?> getCurrentUser();
+}
+
+/// Excepción específica para errores en el servicio de autenticación.
+class AuthServiceException implements Exception {
+  final String message;
+  AuthServiceException(this.message);
+
+  @override
+  String toString() => 'AuthServiceException: $message';
 }
