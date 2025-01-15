@@ -1,50 +1,41 @@
-//lib/src/shared/utils/file_uploader.dart
-enum PageTransition {
-  fade,
-  slide,
-  scale;
-  
-  /// Crea una ruta personalizada con la transición especificada.
+//lib/src/services/file_service.dart
+import 'dart:io';
+
+/// Servicio para manejar operaciones de archivos.
+abstract class FileService {
+  /// Lee un archivo y retorna su contenido como bytes.
   ///
-  /// [page]: La nueva pantalla que se debe mostrar.
-  /// [settings]: Configuración de la ruta, como el nombre de la misma.
+  /// [filePath] es la ruta del archivo a leer.
+  /// Retorna una lista de bytes con el contenido del archivo.
+  /// Puede lanzar una [FileServiceException] si ocurre un error.
+  Future<List<int>> readFile(String filePath);
+
+  /// Escribe datos en un archivo.
   ///
-  /// Devuelve un `PageRoute` configurado con la transición especificada.
-  PageRoute<T> createRoute<T>(Widget page, RouteSettings settings) {
-    switch (this) {
-      case PageTransition.fade:
-        // Implementación de transición de desvanecimiento (Fade).
-        return PageRouteBuilder<T>(
-          settings: settings,
-          pageBuilder: (context, animation, secondaryAnimation) => page,
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-        );
-      case PageTransition.slide:
-        // Implementación de transición deslizante (Slide).
-        return PageRouteBuilder<T>(
-          settings: settings,
-          pageBuilder: (context, animation, secondaryAnimation) => page,
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1, 0), // La pantalla entra desde la derecha.
-                end: Offset.zero, // Posición final: en el centro.
-              ).animate(animation),
-              child: child,
-            );
-          },
-        );
-      case PageTransition.scale:
-        // Implementación de transición de escalado (Scale).
-        return PageRouteBuilder<T>(
-          settings: settings,
-          pageBuilder: (context, animation, secondaryAnimation) => page,
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return ScaleTransition(scale: animation, child: child);
-          },
-        );
-    }
-  }
+  /// [filePath] es la ruta donde se escribirá el archivo.
+  /// [data] son los bytes a escribir en el archivo.
+  /// Puede lanzar una [FileServiceException] si ocurre un error.
+  Future<void> writeFile(String filePath, List<int> data);
+
+  /// Elimina un archivo.
+  ///
+  /// [filePath] es la ruta del archivo a eliminar.
+  /// Puede lanzar una [FileServiceException] si ocurre un error.
+  Future<void> deleteFile(String filePath);
+
+  /// Verifica si un archivo existe.
+  ///
+  /// [filePath] es la ruta del archivo a verificar.
+  /// Retorna true si el archivo existe, false en caso contrario.
+  /// Puede lanzar una [FileServiceException] si ocurre un error.
+  Future<bool> fileExists(String filePath);
+}
+
+/// Excepción específica para errores en el servicio de archivos.
+class FileServiceException implements Exception {
+  final String message;
+  FileServiceException(this.message);
+
+  @override
+  String toString() => 'FileServiceException: $message';
 }
