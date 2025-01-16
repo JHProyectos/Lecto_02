@@ -9,7 +9,7 @@ import 'src/core/pages/settings_page.dart';
 import 'src/core/navigation/route_arguments.dart';
 import 'src/features/processing/processing_screen.dart';
 import 'src/features/playback/playback_screen.dart';
-import 'update_checker.dart';
+import 'src/services/update_checker.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
