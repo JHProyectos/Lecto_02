@@ -6,7 +6,6 @@ import '../presentation/pages/upload/upload_page.dart';
 import '../presentation/pages/processing/processing_page.dart';
 import '../presentation/pages/playback/playback_page.dart';
 import '../presentation/pages/settings/settings_page.dart';
-import '../data/models/playback_arguments.dart';
 
 enum AppRoute {
   login('/login', LoginPage()),
@@ -20,4 +19,11 @@ enum AppRoute {
   final String path;
   final dynamic page;
   const AppRoute(this.path, this.page);
+
+  Widget getPage([dynamic arguments]) {
+    if (page is Function) {
+      return page(arguments);
+    }
+    return page;
+  }
 }
