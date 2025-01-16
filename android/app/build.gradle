@@ -1,1 +1,63 @@
+// Carga las propiedades locales, como la ruta del SDK de Flutter
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
 
+// Verifica la existencia del SDK de Flutter y lo configura
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+// Establece los valores predeterminados para la versión de la aplicación si no están configurados
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode', '1')
+def flutterVersionName = localProperties.getProperty('flutter.versionName', '1.0')
+
+// Aplicación de los complementos de Gradle para Android, Kotlin y Flutter
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+android {
+    compileSdkVersion flutter.compileSdkVersion // Configura el SDK de compilación
+    ndkVersion flutter.ndkVersion // Configura la versión de NDK
+
+    compileOptions { // Configuración de compatibilidad de Java
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions { // Configuración del compilador Kotlin
+        jvmTarget = '1.8'
+    }
+
+    sourceSets { // Define las rutas de los archivos fuente
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId "com.example.lecto_01" // ID único de la aplicación
+        minSdkVersion flutter.minSdkVersion // Versión mínima de SDK soportada
+        targetSdkVersion flutter.targetSdkVersion // Versión objetivo del SDK
+        versionCode 2 // Incrementado para actualizaciones
+        versionName "1.0.1" // Actualizado para reflejar cambios
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug // Configuración de firma (debe actualizarse para producción)
+        }
+    }
+}
+
+flutter { // Configura la ubicación de los archivos fuente de Flutter
+    source '../..'
+}
+
+dependencies { // Dependencias necesarias para la compilación
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
