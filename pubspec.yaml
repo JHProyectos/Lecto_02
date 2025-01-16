@@ -21,6 +21,13 @@ dependencies:
   easy_localization: ^3.0.0 # Localización
   http: ^0.13.5 # Solicitudes HTTP
   url_launcher: ^6.1.5 # Abrir enlaces en el navegador
+  flutter_bloc: ^8.1.1 # Gestión de estado con BLoC
+  equatable: ^2.0.5 # Comparaciones de igualdad simplificadas
+  just_audio: ^0.9.30 # Reproducción de audio
+  file_picker: ^5.2.5 # Selección de archivos
+  path_provider: ^2.0.11 # Acceso a directorios del sistema
+  shared_preferences: ^2.0.15 # Almacenamiento local de datos
+  flutter_pdfview: ^1.2.5 # Visualización de PDFs
 
 # Dependencias para desarrollo
 dev_dependencies:
@@ -35,12 +42,12 @@ flutter:
     - assets/translations/ # Traducciones
     - assets/images/ # Imágenes
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font.
+  # Para agregar fuentes personalizadas a tu aplicación, añade una sección de fuentes aquí,
+  # en esta sección "flutter". Cada entrada en esta lista debe tener una
+  # clave "family" con el nombre de la familia de fuentes, y una clave "fonts" con una
+  # lista que proporcione el asset y otros descriptores para la fuente.
   #
-  # For example:
+  # Por ejemplo:
   # fonts:
   #   - family: Schyler
   #     fonts:
