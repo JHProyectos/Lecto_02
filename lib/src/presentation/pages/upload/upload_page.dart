@@ -1,90 +1,144 @@
+// lib/src/presentation/pages/upload/upload_page.dart
+
 // Widgets y funcionalidades básicas de Flutter
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 // Localización
 import 'package:easy_localization/easy_localization.dart';
 
+// Gestión de estado
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 // Navegación y rutas
-import '../../core/navigation/app_navigator.dart';
-import '../../core/navigation/app_route.dart';
-import '../../core/navigation/page_transition.dart';
+import '../../../core/navigation/app_navigator.dart';
+import '../../../core/navigation/app_routes.dart';
 
-// Manejo de errores
-import '../../core/error/error_handler.dart';
+// Blocs
+import '../../blocs/pdf_bloc.dart';
 
-// Gestión de temas
-import '../../core/providers/theme_provider.dart';
-import '../../core/theme/theme_config.dart';
+// Widgets personalizados
+import '../../widgets/custom_button.dart';
 
-// Utilidades y widgets personalizados
-import '../../shared/utils/file_uploader.dart';
-import '../../shared/widgets/custom_button.dart';
-import '../../shared/widgets/language_selector.dart';
+// Servicios
+import '../../../services/file_service.dart';
 
-// Otras pantallas (para navegación)
-import '../processing/processing_screen.dart';
+/// Página para cargar archivos PDF.
+///
+/// Esta página permite al usuario seleccionar y cargar un archivo PDF
+/// para su posterior procesamiento y conversión a audio.
+class UploadPage extends StatefulWidget {
+  /// Constructor de UploadPage.
+  const UploadPage({Key? key}) : super(key: key);
 
-/// Pantalla para subir archivos PDF
-/// Estado de la pantalla de carga (Upload).
-class _UploadScreenState extends State<UploadScreen> {
-  /// Indica si se está realizando una operación de carga.
-  bool _isUploading = false;
+  @override
+  _UploadPageState createState() => _UploadPageState();
+}
 
-  /// Mensaje de error, en caso de que ocurra un problema durante la carga.
-  String? _errorMessage;
-
-  /// Navega a la pantalla de procesamiento después de cargar un archivo.
-  ///
-  /// [fileName]: Nombre del archivo cargado.
-  void _navigateToProcessing(String fileName) {
-    AppNavigator.pushNamed(
-      context,
-      AppRoute.processing,
-      arguments: ProcessingScreenArguments(fileName: fileName), // Argumentos de procesamiento.
-      transition: PageTransition.slide, // Transición de desplazamiento.
-    );
-  }
-
-  /// Maneja la lógica para cargar un archivo.
-  ///
-  /// [file]: Archivo que se desea cargar.
-  /// Una vez cargado, redirige a la pantalla de procesamiento.
-  void _handleUpload(File file) async {
-    setState(() => _isUploading = true); // Indica que el estado es "subiendo".
-    try {
-      final fileName = await uploadFile(file); // Simula la operación de carga del archivo.
-      _navigateToProcessing(fileName); // Navega a la pantalla de procesamiento.
-    } catch (e) {
-      // Captura errores y los asigna al mensaje de error.
-      setState(() => _errorMessage = ErrorHandler.getUploadErrorMessage(e));
-    } finally {
-      setState(() => _isUploading = false); // Finaliza el estado de "subiendo".
-    }
-  }
+class _UploadPageState extends State<UploadPage> {
+  String? _selectedFilePath;
+  final FileService _fileService = FileService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('upload.title'.tr())), // Título traducido.
-      body: Center(
-        // Muestra un indicador de carga o el contenido principal.
-        child: _isUploading
-          ? CircularProgressIndicator() // Indicador de carga mientras se realiza la operación.
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Botón para cargar un archivo.
-                ElevatedButton(
-                  onPressed: () => _handleUpload(File('path/to/file')), // Simula la selección de un archivo.
-                  child: Text('upload.select_file'.tr()), // Texto traducido.
-                ),
-                // Muestra un mensaje de error si ocurre un problema durante la carga.
-                if (_errorMessage != null)
-                  Text(_errorMessage!, style: TextStyle(color: Colors.red)),
-              ],
-            ),
+      appBar: AppBar(
+        title: Text('upload_title'.tr()), // "Subir PDF"
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildInstructions(),
+              const SizedBox(height: 24),
+              _buildFileSelection(),
+              const SizedBox(height: 24),
+              _buildUploadButton(),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  /// Construye el widget de instrucciones para el usuario.
+  Widget _buildInstructions() {
+    return Text(
+      'upload_instructions'.tr(), // "Selecciona un archivo PDF para convertirlo a audio."
+      style: Theme.of(context).textTheme.subtitle1,
+      textAlign: TextAlign.center,
+    );
+  }
+
+  /// Construye el widget para la selección de archivos.
+  Widget _buildFileSelection() {
+    return Column(
+      children: [
+        CustomButton(
+          text: 'select_file'.tr(), // "Seleccionar archivo"
+          onPressed: _selectFile,
+        ),
+        const SizedBox(height: 8),
+        if (_selectedFilePath != null)
+          Text(
+            'selected_file'.tr(args: [_selectedFilePath!.split('/').last]), // "Archivo seleccionado: {filename}"
+            style: Theme.of(context).textTheme.bodyText2,
+            textAlign: TextAlign.center,
+          ),
+      ],
+    );
+  }
+
+  /// Construye el botón de carga de archivos.
+  Widget _buildUploadButton() {
+    return BlocConsumer<PdfBloc, PdfState>(
+      listener: (context, state) {
+        if (state is PdfUploaded) {
+          // Navegar a la página de procesamiento cuando el PDF se haya cargado exitosamente
+          AppNavigator.pushNamed(
+            AppRoutes.processing,
+            arguments: state.pdf.id,
+          );
+        } else if (state is PdfError) {
+          // Mostrar un snackbar con el mensaje de error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
+      builder: (context, state) {
+        return CustomButton(
+          text: 'upload_button'.tr(), // "Subir y procesar"
+          onPressed: _selectedFilePath != null
+              ? () => _uploadFile(context)
+              : null,
+          isLoading: state is PdfUploading,
+        );
+      },
+    );
+  }
+
+  /// Maneja la selección de archivos.
+  Future<void> _selectFile() async {
+    try {
+      final filePath = await _fileService.pickPdfFile();
+      if (filePath != null) {
+        setState(() {
+          _selectedFilePath = filePath;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('file_selection_error'.tr())), // "Error al seleccionar el archivo"
+      );
+    }
+  }
+
+  /// Maneja la carga del archivo seleccionado.
+  void _uploadFile(BuildContext context) {
+    if (_selectedFilePath != null) {
+      context.read<PdfBloc>().add(UploadPdfEvent(_selectedFilePath!));
+    }
   }
 }
