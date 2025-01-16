@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Widget que muestra el logo de la aplicación.
+/// Widget que muestra el logo de la aplicación desde los assets.
 class AppLogo extends StatelessWidget {
   /// El tamaño del logo.
   final double size;
@@ -18,13 +18,11 @@ class AppLogo extends StatelessWidget {
         color: Theme.of(context).primaryColor,
       ),
       child: Center(
-        child: Text(
-          'L',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: size * 0.6,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Image.asset(
+          'assets/images/logo_app.png', // Cargar la imagen desde los assets
+          width: size * 0.8, // Ajusta el tamaño de la imagen según el tamaño del logo
+          height: size * 0.8, // Ajusta el tamaño de la imagen según el tamaño del logo
+          fit: BoxFit.contain, // Asegura que la imagen se ajuste al contenedor sin perder la proporción
         ),
       ),
     );
