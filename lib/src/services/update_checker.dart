@@ -1,13 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:lecto_01/src/core/config/app_config.dart'; // Importa AppConfig
 
 /// Clase para verificar actualizaciones disponibles de la aplicación.
 class UpdateChecker {
   /// Versión actual de la aplicación.
-  final String currentVersion = "1.0.0";
-
-  /// URL del endpoint para verificar actualizaciones.
-  final String apiEndpoint = "https://tu-backend.com/version";
+  /// Ahora se toma de AppConfig para mantener consistencia.
+  final String currentVersion = AppConfig.appVersion;
 
   /// Verifica si hay una actualización disponible.
   ///
@@ -15,7 +14,7 @@ class UpdateChecker {
   /// Puede lanzar una excepción si hay un error al contactar el servidor.
   Future<bool> isUpdateAvailable() async {
     try {
-      final response = await http.get(Uri.parse(apiEndpoint));
+      final response = await http.get(Uri.parse(AppConfig.updateCheckEndpoint));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final latestVersion = data['latestVersion'];
