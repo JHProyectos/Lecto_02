@@ -27,14 +27,14 @@ class AppNavigator {
     switch (route) {
       case AppRoute.login:
       case AppRoute.home:
-        return FadePageRoute(builder: (_) => route.page, settings: settings);
+        return FadePageRoute(builder: (_) => route.getPage(), settings: settings);
       case AppRoute.utnValidation:
       case AppRoute.pdfUpload:
       case AppRoute.settings:
-        return SlidePageRoute(builder: (_) => route.page, settings: settings);
+        return SlidePageRoute(builder: (_) => route.getPage(), settings: settings);
       case AppRoute.processing:
       case AppRoute.playback:
-        return FadePageRoute(builder: (_) => route.page(settings.arguments), settings: settings);
+        return FadePageRoute(builder: (_) => route.getPage(settings.arguments), settings: settings);
     }
   }
 }
