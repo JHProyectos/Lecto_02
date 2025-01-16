@@ -1,1 +1,12 @@
-#
+<!-- Archivo Info.plist: Configuraciones de la aplicación para iOS -->
+<plist version="1.0">
+<dict>
+    <!-- Versión de la aplicación para la App Store -->
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.1</string>
+
+    <!-- Número de compilación para identificar actualizaciones -->
+    <key>CFBundleVersion</key>
+    <string>2</string>
+</dict>
+</plist>
