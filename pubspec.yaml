@@ -1,39 +1,39 @@
-name: Lecto_01
-description: A new Flutter project for text-to-speech conversion.
+# Nombre del proyecto y descripción
+name: lecto_02
+description: Una aplicación para convertir texto a voz.
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+# Configuración de publicación
+publish_to: 'none' # Evita publicar el paquete en pub.dev
 
-version: 1.0.0+1
+# Configuración de versión
+version: 1.0.1+2 # Versión de la app: [versión]+[build]
 
+# Entorno requerido
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.19.0 <3.0.0' # Versión del SDK de Dart requerida
 
-dependencies: #Chequear las versiones antes de implementar
+# Dependencias principales
+dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.13.0
-  firebase_auth: ^4.6.2
-  google_sign_in: ^6.1.2
-  form_field_validator: ^1.1.0
-  flutter_dropzone: ^3.0.0
-  easy_localization: ^3.0.3
-  #flutter_tts: ^4.2.0
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  provider: ^6.0.0 # Gestión de estado
+  easy_localization: ^3.0.0 # Localización
+  http: ^0.13.5 # Solicitudes HTTP
+  url_launcher: ^6.1.5 # Abrir enlaces en el navegador
 
+# Dependencias para desarrollo
 dev_dependencies:
   flutter_test:
-    sdk: flutter
-  flutter_lints: ^2.0.0
+    sdk: flutter # Framework para pruebas de Flutter
+  flutter_lints: ^2.0.0 # Estándares de código
 
+# Configuraciones adicionales de Flutter
 flutter:
   uses-material-design: true
-
   assets:
-    - assets/images/
+    - assets/translations/ # Traducciones
+    - assets/images/ # Imágenes
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
