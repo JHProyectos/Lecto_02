@@ -9,6 +9,14 @@
     "loading": "Cargando...",
     "retry": "Reintentar"
   },
+    "auth": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "email_required": "Por favor, ingrese su correo electrónico",
+    "password_required": "Por favor, ingrese su contraseña",
+    "login": "Iniciar sesión",
+    "register_prompt": "¿No tienes cuenta? Regístrate aquí"
+  },
   "login": {
     "title": "Iniciar sesión",
     "form": {
