@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../../../core/navigation/app_navigator.dart';
+import '../../../core/navigation/app_routes.dart';
 import '../../../domain/usecases/validate_utn_id_usecase.dart';
 import '../../blocs/auth_bloc.dart';
 import '../../widgets/custom_button.dart';
@@ -39,16 +42,16 @@ class _UTNValidationPageState extends State<UTNValidationPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Validación exitosa'),
-          content: const Text('Tu ID de UTN ha sido validado correctamente.'),
+          title: Text('common.success'.tr()),
+          content: Text('auth.utn_validation_success'.tr()),
           actions: <Widget>[
             TextButton(
-              child: const Text('Continuar'),
+              child: Text('common.ok'.tr()),
               onPressed: () {
                 Navigator.of(context).pop();
                 // Aquí se debería navegar a la página de registro completo
                 // Por ahora, volveremos a la página de inicio de sesión
-                Navigator.of(context).pushReplacementNamed('/login');
+                AppNavigator.pushReplacementNamed(AppRoutes.login);
               },
             ),
           ],
@@ -61,7 +64,7 @@ class _UTNValidationPageState extends State<UTNValidationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Validación de ID UTN'),
+        title: Text('auth.utn_validation_title'.tr()),
       ),
       body: SafeArea(
         child: Center(
@@ -72,21 +75,21 @@ class _UTNValidationPageState extends State<UTNValidationPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Ingresa tu ID de UTN para validar tu cuenta',
+                  Text(
+                    'auth.enter_utn_id'.tr(),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
                   TextFormField(
                     controller: _utnIdController,
-                    decoration: const InputDecoration(
-                      labelText: 'ID de UTN',
+                    decoration: InputDecoration(
+                      labelText: 'auth.utn_id'.tr(),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, ingresa tu ID de UTN';
+                        return 'auth.utn_id_required'.tr();
                       }
                       // Aquí se pueden agregar más validaciones específicas para el formato del ID de UTN
                       return null;
@@ -94,7 +97,7 @@ class _UTNValidationPageState extends State<UTNValidationPage> {
                   ),
                   const SizedBox(height: 24),
                   CustomButton(
-                    text: 'Validar ID',
+                    text: 'auth.validate_id'.tr(),
                     onPressed: _handleValidation,
                   ),
                 ],
