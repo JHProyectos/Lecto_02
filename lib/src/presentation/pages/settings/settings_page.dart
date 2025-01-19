@@ -1,22 +1,11 @@
 // lib/src/presentation/pages/settings/settings_page.dart
 
-// Widgets y funcionalidades básicas de Flutter
 import 'package:flutter/material.dart';
-
-// Localización
 import 'package:easy_localization/easy_localization.dart';
-
-// Gestión de estado
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// Gestión de temas
 import '../../../core/providers/theme_provider.dart';
 import '../../../core/theme/theme_config.dart';
-
-// Blocs
 import '../../blocs/auth_bloc.dart';
-
-// Widgets personalizados
 import '../../widgets/custom_button.dart';
 import '../../widgets/language_selector.dart';
 
@@ -25,14 +14,13 @@ import '../../widgets/language_selector.dart';
 /// Permite al usuario ajustar varias configuraciones de la aplicación,
 /// como el tema, el idioma y gestionar su cuenta.
 class SettingsPage extends StatelessWidget {
-  /// Constructor de SettingsPage.
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('settings_title'.tr()), // "Configuración"
+        title: Text('settings.title'.tr()),
       ),
       body: SafeArea(
         child: ListView(
@@ -49,14 +37,13 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  /// Construye la sección de configuración del tema.
   Widget _buildThemeSection(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'theme_section_title'.tr(), // "Tema de la aplicación"
+          'settings.theme_section_title'.tr(),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 8),
@@ -70,15 +57,15 @@ class SettingsPage extends StatelessWidget {
           items: [
             DropdownMenuItem(
               value: ThemeMode.system,
-              child: Text('theme_system'.tr()), // "Sistema"
+              child: Text('settings.theme_system'.tr()),
             ),
             DropdownMenuItem(
               value: ThemeMode.light,
-              child: Text('theme_light'.tr()), // "Claro"
+              child: Text('settings.theme_light'.tr()),
             ),
             DropdownMenuItem(
               value: ThemeMode.dark,
-              child: Text('theme_dark'.tr()), // "Oscuro"
+              child: Text('settings.theme_dark'.tr()),
             ),
           ],
         ),
@@ -86,13 +73,12 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  /// Construye la sección de configuración del idioma.
   Widget _buildLanguageSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'language_section_title'.tr(), // "Idioma"
+          'settings.language_section_title'.tr(),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 8),
@@ -101,13 +87,12 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  /// Construye la sección de gestión de cuenta.
   Widget _buildAccountSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'account_section_title'.tr(), // "Cuenta"
+          'settings.account_section_title'.tr(),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 8),
@@ -116,10 +101,10 @@ class SettingsPage extends StatelessWidget {
             if (state is AuthAuthenticated) {
               return Column(
                 children: [
-                  Text('logged_in_as'.tr(args: [state.user.name])), // "Conectado como: {name}"
+                  Text('settings.logged_in_as'.tr(args: [state.user.name])),
                   const SizedBox(height: 8),
                   CustomButton(
-                    text: 'logout_button'.tr(), // "Cerrar sesión"
+                    text: 'settings.logout_button'.tr(),
                     onPressed: () {
                       context.read<AuthBloc>().add(LogoutEvent());
                     },
@@ -127,10 +112,9 @@ class SettingsPage extends StatelessWidget {
                   if (!state.user.isPremium) ...[
                     const SizedBox(height: 16),
                     CustomButton(
-                      text: 'upgrade_to_premium'.tr(), // "Actualizar a Premium"
+                      text: 'settings.upgrade_to_premium'.tr(),
                       onPressed: () {
-                        // Navegar a la página de actualización a premium
-                        // TODO: Implementar la navegación a la página de actualización
+                        // TODO: Implement navigation to upgrade page
                       },
                     ),
                   ],
@@ -138,9 +122,8 @@ class SettingsPage extends StatelessWidget {
               );
             } else {
               return CustomButton(
-                text: 'login_button'.tr(), // "Iniciar sesión"
+                text: 'settings.login_button'.tr(),
                 onPressed: () {
-                  // Navegar a la página de inicio de sesión
                   Navigator.of(context).pushReplacementNamed('/login');
                 },
               );
