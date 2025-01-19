@@ -9,6 +9,20 @@
     "loading": "Loading...",
     "retry": "Retry"
   },
+   "main":{
+    "update_available": "A new update is available.",
+    "update_now": "Update now",
+    "update_later": "Later",
+    "error_route": "Error: Route not found"
+   },
+   "auth": {
+    "email": "Email",
+    "password": "Password",
+    "email_required": "Email is required",
+    "password_required": "Password is required",
+    "login": "Log in",
+    "register_prompt": "¿Don't have an account? Sign up here!"
+  },
   "login": {
     "title": "Login",
     "form": {
