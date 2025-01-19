@@ -9,6 +9,12 @@
     "loading": "Cargando...",
     "retry": "Reintentar"
   },
+   "main": {
+    "update_available": "Hay una nueva actualización disponible.",
+    "update_now": "Actualizar ahora",
+    "update_later": "Más tarde",
+    "error_route": "Error: Ruta no encontrada"
+   },
     "auth": {
     "email": "Correo electrónico",
     "password": "Contraseña",
