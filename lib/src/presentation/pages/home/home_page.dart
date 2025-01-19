@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../../../core/navigation/app_navigator.dart';
+import '../../../core/navigation/app_routes.dart';
 import '../../../domain/entities/user.dart';
 import '../../blocs/auth_bloc.dart';
 import '../../blocs/pdf_bloc.dart';
@@ -18,12 +21,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inicio'),
+        title: Text('home.title'.tr()),
         actions: [
           // Botón para acceder a la página de configuración
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => Navigator.of(context).pushNamed('/settings'),
+            onPressed: () => AppNavigator.pushNamed(AppRoutes.settings),
           ),
         ],
       ),
@@ -34,9 +37,9 @@ class HomePage extends StatelessWidget {
           } else {
             // Si el usuario no está autenticado, redirigir al login
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pushReplacementNamed('/login');
+              AppNavigator.pushReplacementNamed(AppRoutes.login);
             });
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
@@ -52,7 +55,7 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Bienvenido, ${user.name}',
+              'home.welcome'.tr(args: [user.name]),
               style: Theme.of(context).textTheme.headline5,
             ),
             const SizedBox(height: 24),
@@ -75,8 +78,8 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Tipo de usuario: ${_getUserTypeString(user.userType)}'),
-            Text('Estado de suscripción: ${user.isPremium ? 'Premium' : 'Gratuito'}'),
+            Text('home.user_type'.tr(args: [_getUserTypeString(user.userType)])),
+            Text('home.subscription_status'.tr(args: [user.isPremium ? 'home.premium'.tr() : 'home.free'.tr()])),
             // Aquí se pueden agregar más detalles del usuario según sea necesario
           ],
         ),
@@ -89,16 +92,16 @@ class HomePage extends StatelessWidget {
     return Column(
       children: [
         CustomButton(
-          text: 'Subir nuevo PDF',
-          onPressed: () => Navigator.of(context).pushNamed('/upload'),
+          text: 'home.actions.upload_pdf'.tr(),
+          onPressed: () => AppNavigator.pushNamed(AppRoutes.upload),
         ),
         const SizedBox(height: 16),
         CustomButton(
-          text: 'Ver archivos procesados',
+          text: 'home.actions.view_processed_files'.tr(),
           onPressed: () {
             // Aquí se debería navegar a una página que muestre los archivos procesados
             // Por ahora, mostraremos un diálogo simple
-            _showComingSoonDialog(context, 'Ver archivos procesados');
+            _showComingSoonDialog(context, 'home.actions.view_processed_files'.tr());
           },
         ),
       ],
@@ -113,11 +116,11 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Actividad reciente', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('home.recent_activity'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             // Aquí se debería mostrar una lista de actividades recientes
             // Por ahora, mostraremos un placeholder
-            Text('No hay actividad reciente para mostrar.'),
+            Text('home.no_recent_activity'.tr()),
           ],
         ),
       ),
@@ -130,11 +133,11 @@ class HomePage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Próximamente'),
-          content: Text('La función "$feature" estará disponible pronto.'),
+          title: Text('common.coming_soon'.tr()),
+          content: Text('home.feature_coming_soon'.tr(args: [feature])),
           actions: <Widget>[
             TextButton(
-              child: const Text('Aceptar'),
+              child: Text('common.ok'.tr()),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -147,19 +150,19 @@ class HomePage extends StatelessWidget {
   String _getUserTypeString(UserType userType) {
     switch (userType) {
       case UserType.free:
-        return 'Gratuito';
+        return 'home.user_types.free'.tr();
       case UserType.premium:
-        return 'Premium';
+        return 'home.user_types.premium'.tr();
       case UserType.developer:
-        return 'Desarrollador';
+        return 'home.user_types.developer'.tr();
       case UserType.tester:
-        return 'Tester';
+        return 'home.user_types.tester'.tr();
       case UserType.admin:
-        return 'Administrador';
+        return 'home.user_types.admin'.tr();
       case UserType.guest:
-        return 'Invitado';
+        return 'home.user_types.guest'.tr();
       default:
-        return 'Desconocido';
+        return 'home.user_types.unknown'.tr();
     }
   }
 }
