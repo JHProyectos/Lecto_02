@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../../../core/navigation/app_navigator.dart';
+import '../../../core/navigation/app_routes.dart';
 import '../../../domain/entities/audio.dart';
 import '../../../domain/entities/user.dart';
 import '../../blocs/audio_bloc.dart';
@@ -29,7 +32,7 @@ class PlaybackPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reproducción de Audio'),
+        title: Text('playback.title'.tr()),
       ),
       body: SafeArea(
         child: Padding(
@@ -38,7 +41,7 @@ class PlaybackPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Reproduciendo: ${audio.name}',
+                'playback.now_playing'.tr(args: [audio.name]),
                 style: Theme.of(context).textTheme.headline6,
               ),
               const SizedBox(height: 24),
@@ -63,14 +66,14 @@ class PlaybackPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Opciones adicionales',
+          'playback.additional_options'.tr(),
           style: Theme.of(context).textTheme.subtitle1,
         ),
         const SizedBox(height: 8),
         // Opción para descargar el audio (solo para usuarios premium)
         ListTile(
           leading: const Icon(Icons.download),
-          title: const Text('Descargar audio'),
+          title: Text('playback.download_audio'.tr()),
           onTap: user.isPremium
               ? () => _handleDownload(context)
               : () => _showPremiumFeatureDialog(context),
@@ -89,11 +92,11 @@ class PlaybackPage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Descarga iniciada'),
-          content: const Text('Tu audio se está descargando...'),
+          title: Text('playback.download_started'.tr()),
+          content: Text('playback.download_in_progress'.tr()),
           actions: <Widget>[
             TextButton(
-              child: const Text('Aceptar'),
+              child: Text('common.ok'.tr()),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -108,19 +111,20 @@ class PlaybackPage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Función Premium'),
-          content: const Text('Esta función está disponible solo para usuarios premium. ¿Deseas actualizar tu cuenta?'),
+          title: Text('playback.premium_feature'.tr()),
+          content: Text('playback.premium_feature_description'.tr()),
           actions: <Widget>[
             TextButton(
-              child: const Text('No, gracias'),
+              child: Text('common.no_thanks'.tr()),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: const Text('Actualizar'),
+              child: Text('playback.upgrade'.tr()),
               onPressed: () {
                 Navigator.of(context).pop();
                 // Aquí se debería navegar a la página de actualización de cuenta
                 // Por ahora, solo cerraremos el diálogo
+                AppNavigator.pushNamed(AppRoutes.upgrade);
               },
             ),
           ],
