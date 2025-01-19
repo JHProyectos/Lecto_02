@@ -1,7 +1,10 @@
+// lib/main.dart
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'src/core/localization/app_localization.dart';
 import 'src/core/providers/theme_provider.dart';
 import 'src/core/navigation/routes.dart';
 import 'src/core/navigation/app_navigator.dart';
@@ -13,7 +16,7 @@ import 'src/services/update_checker.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
+  await AppLocalization.init();
 
   // Verificar actualizaciones al inicio de la aplicación
   final updateChecker = UpdateChecker();
@@ -21,9 +24,9 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('es')],
-      path: StaticResources.translationPath,
-      fallbackLocale: const Locale('en'),
+      supportedLocales: AppLocalization.supportedLocales,
+      path: AppLocalization.path,
+      fallbackLocale: AppLocalization.fallbackLocale,
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => ThemeProvider()),
@@ -51,12 +54,12 @@ class MyApp extends StatelessWidget {
           locale: context.locale,
           supportedLocales: context.supportedLocales,
           localizationsDelegates: context.localizationDelegates,
-          home: isUpdateAvailable ? UpdatePromptScreen() : const SettingsPage(),
+          home: isUpdateAvailable ? const UpdatePromptScreen() : const SettingsPage(),
           navigatorKey: AppNavigator.navigatorKey,
           navigatorObservers: [AppNavigatorObserver()],
           onGenerateRoute: (settings) {
             final args = settings.arguments;
-            
+
             switch (settings.name) {
               case AppRoute.processing.path:
                 if (args is ProcessingArguments) {
@@ -68,7 +71,7 @@ class MyApp extends StatelessWidget {
                   );
                 }
                 return _errorRoute();
-              
+
               case AppRoute.playback.path:
                 if (args is PlaybackArguments) {
                   return MaterialPageRoute(
@@ -79,7 +82,7 @@ class MyApp extends StatelessWidget {
                   );
                 }
                 return _errorRoute();
-              
+
               default:
                 return _errorRoute();
             }
@@ -93,7 +96,39 @@ class MyApp extends StatelessWidget {
     return MaterialPageRoute(
       builder: (_) => Scaffold(
         body: Center(
-          child: Text('Error: Ruta no encontrada'),
+          child: Text('main.error_route'.tr()), // Texto traducido
+        ),
+      ),
+    );
+  }
+}
+
+class UpdatePromptScreen extends StatelessWidget {
+  const UpdatePromptScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('main.update_available'.tr()), // Texto traducido
+            ElevatedButton(
+              onPressed: () {
+                launchUrl(Uri.parse("https://play.google.com/store/apps/details?id=com.tuapp"));
+              },
+              child: Text('main.update_now'.tr()), // Texto traducido
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const SettingsPage()),
+                );
+              },
+              child: Text('main.update_later'.tr()), // Texto traducido
+            ),
+          ],
         ),
       ),
     );
@@ -109,35 +144,5 @@ class AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     print('Ruta eliminada: ${route.settings.name}');
-  }
-}
-
-class UpdatePromptScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Hay una nueva actualización disponible.'),
-            ElevatedButton(
-              onPressed: () {
-                launchUrl(Uri.parse("https://play.google.com/store/apps/details?id=com.tuapp"));
-              },
-              child: Text('Actualizar ahora'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => SettingsPage()),
-                );
-              },
-              child: Text('Más tarde'),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
