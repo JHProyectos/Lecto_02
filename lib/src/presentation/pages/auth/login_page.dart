@@ -1,9 +1,22 @@
 // lib/src/presentation/pages/auth/login_page.dart
 
+// Widgets y funcionalidades básicas de Flutter
 import 'package:flutter/material.dart';
+
+// Gestión de estado
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../domain/entities/user.dart';
+
+// Localización
+import 'package:easy_localization/easy_localization.dart';
+
+// Navegación y rutas
+import '../../../core/navigation/app_navigator.dart';
+import '../../../core/navigation/app_routes.dart';
+
+// Blocs
 import '../../blocs/auth_bloc.dart';
+
+// Widgets personalizados
 import '../../widgets/app_logo.dart';
 import '../../widgets/custom_button.dart';
 
@@ -47,11 +60,11 @@ class _LoginPageState extends State<LoginPage> {
           if (state is AuthError) {
             // Muestra un snackbar con el mensaje de error
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              SnackBar(content: Text(state.message.tr())),
             );
           } else if (state is AuthAuthenticated) {
             // Navega a la página principal si la autenticación es exitosa
-            Navigator.of(context).pushReplacementNamed('/home');
+            AppNavigator.pushReplacementNamed(AppRoutes.home);
           }
         },
         child: SafeArea(
@@ -67,14 +80,14 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 32),
                     TextFormField(
                       controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Correo electrónico',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'auth.email'.tr(), // "Correo electrónico"
+                        border: const OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor, ingrese su correo electrónico';
+                          return 'auth.email_required'.tr(); // "Por favor, ingrese su correo electrónico"
                         }
                         return null;
                       },
@@ -82,30 +95,30 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Contraseña',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'auth.password'.tr(), // "Contraseña"
+                        border: const OutlineInputBorder(),
                       ),
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor, ingrese su contraseña';
+                          return 'auth.password_required'.tr(); // "Por favor, ingrese su contraseña"
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 24),
                     CustomButton(
-                      text: 'Iniciar sesión',
+                      text: 'auth.login'.tr(), // "Iniciar sesión"
                       onPressed: _handleLogin,
                     ),
                     const SizedBox(height: 16),
                     TextButton(
                       onPressed: () {
                         // Navega a la página de validación de UTN
-                        Navigator.of(context).pushNamed('/utn-validation');
+                        AppNavigator.pushNamed(AppRoutes.utnValidation);
                       },
-                      child: const Text('¿No tienes cuenta? Regístrate aquí'),
+                      child: Text('auth.register_prompt'.tr()), // "¿No tienes cuenta? Regístrate aquí"
                     ),
                   ],
                 ),
