@@ -7,7 +7,9 @@
     "error": "Error",
     "success": "Success",
     "loading": "Loading...",
-    "retry": "Retry"
+    "retry": "Retry",
+    "yes": "Yes",
+    "no": "No"
   },
    "main":{
     "update_available": "A new update is available.",
@@ -50,26 +52,14 @@
       "my_audio_files": "My Audio Files"
     }
   },
-  "upload": {
+ "upload": {
     "title": "Upload PDF",
-    "instructions": {
-      "drag_file_here": "Drag a PDF file here",
-      "select_pdf": "Select PDF"
-    },
-    "actions": {
-      "upload_pdf": "Upload PDF"
-    },
-    "messages": {
-      "success_title": "Success",
-      "success_message": "The PDF file has been uploaded successfully.",
-      "error_title": "Error",
-      "error_message": "There was a problem uploading the PDF file."
-    },
-    "validations": {
-      "file_size_limit": "Maximum file size is 10 MB",
-      "invalid_file_type": "Please select a valid PDF file"
-    }
-  },
+    "instructions": "Select a PDF file to convert to audio.",
+    "select_file": "Select file",
+    "selected_file": "Selected file: {0}",
+    "upload_button": "Upload and process",
+    "file_selection_error": "Error selecting file"
+ },
  "processing": {
     "title": "Processing PDF",
     "message": "Your PDF is being converted to audio...",
@@ -94,16 +84,18 @@
       "premium_message": "This feature is available only for premium users."
     }
   },
-  "settings": {
+ "settings": {
     "title": "Settings",
-    "language": "Language",
-    "theme": "Theme",
-    "dark_mode": "Dark Mode",
-    "light_mode": "Light Mode",
-    "account": "Account",
-    "premium": "Premium",
-    "upgrade": "Upgrade to Premium",
-    "logout": "Logout"
+    "theme_section_title": "App Theme",
+    "theme_system": "System",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "language_section_title": "Language",
+    "account_section_title": "Account",
+    "logged_in_as": "Logged in as: {0}",
+    "logout_button": "Log out",
+    "upgrade_to_premium": "Upgrade to Premium",
+    "login_button": "Log in"
   },
   "errors": {
     "general": "An error has occurred. Please try again.",
