@@ -7,7 +7,9 @@
     "error": "Error",
     "success": "Éxito",
     "loading": "Cargando...",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "yes": "Sí",
+    "no": "No"
   },
    "main": {
     "update_available": "Hay una nueva actualización disponible.",
@@ -50,25 +52,13 @@
       "my_audio_files": "Mis archivos de audio"
     }
   },
-  "upload": {
+ "upload": {
     "title": "Subir PDF",
-    "instructions": {
-      "drag_file_here": "Arrastra un archivo PDF aquí",
-      "select_pdf": "Seleccionar PDF"
-    },
-    "actions": {
-      "upload_pdf": "Subir PDF"
-    },
-    "messages": {
-      "success_title": "Éxito",
-      "success_message": "El archivo PDF se ha subido correctamente.",
-      "error_title": "Error",
-      "error_message": "Hubo un problema al subir el archivo PDF."
-    },
-    "validations": {
-      "file_size_limit": "El tamaño máximo del archivo es 10 MB",
-      "invalid_file_type": "Por favor, selecciona un archivo PDF válido"
-    }
+    "instructions": "Selecciona un archivo PDF para convertirlo a audio.",
+    "select_file": "Seleccionar archivo",
+    "selected_file": "Archivo seleccionado: {0}",
+    "upload_button": "Subir y procesar",
+    "file_selection_error": "Error al seleccionar el archivo"
   },
   "processing": {
     "title": "Procesando PDF",
@@ -95,16 +85,18 @@
       "premium_message": "Esta función está disponible solo para usuarios premium."
     }
   },
-  "settings": {
+ "settings": {
     "title": "Configuración",
-    "language": "Idioma",
-    "theme": "Tema",
-    "dark_mode": "Modo oscuro",
-    "light_mode": "Modo claro",
-    "account": "Cuenta",
-    "premium": "Premium",
-    "upgrade": "Actualizar a Premium",
-    "logout": "Cerrar sesión"
+    "theme_section_title": "Tema de la aplicación",
+    "theme_system": "Sistema",
+    "theme_light": "Claro",
+    "theme_dark": "Oscuro",
+    "language_section_title": "Idioma",
+    "account_section_title": "Cuenta",
+    "logged_in_as": "Conectado como: {0}",
+    "logout_button": "Cerrar sesión",
+    "upgrade_to_premium": "Actualizar a Premium",
+    "login_button": "Iniciar sesión"
   },
  "errors": {
     "general": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
