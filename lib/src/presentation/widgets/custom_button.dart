@@ -1,10 +1,11 @@
-//lib/src/presentation/widgets/custom_button.dart
+// lib/src/presentation/widgets/custom_button.dart
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 /// Un botón personalizado que se puede utilizar en toda la aplicación.
 class CustomButton extends StatelessWidget {
-  /// El texto que se mostrará en el botón.
-  final String text;
+  /// La clave de traducción para el texto que se mostrará en el botón.
+  final String textKey;
 
   /// La función que se ejecutará cuando se presione el botón.
   final VoidCallback onPressed;
@@ -21,7 +22,7 @@ class CustomButton extends StatelessWidget {
   /// Constructor del CustomButton.
   const CustomButton({
     Key? key,
-    required this.text,
+    required this.textKey,
     required this.onPressed,
     this.backgroundColor,
     this.textColor,
@@ -42,7 +43,7 @@ class CustomButton extends StatelessWidget {
         ),
       ),
       child: Text(
-        text,
+        textKey.tr(),
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
     );
