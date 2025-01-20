@@ -107,5 +107,10 @@
     "conversion": "Error al convertir PDF a audio. Por favor, intenta de nuevo.",
     "unauthorized": "No estás autorizado para realizar esta acción.",
     "not_found": "El recurso solicitado no se encontró."
+  },
+  "audio_player": {
+    "premium_feature": "Función Premium",
+    "premium_feature_description": "El cambio de velocidad de reproducción es una función premium. ¿Deseas actualizar tu suscripción?",
+    "upgrade": "Actualizar"
   }
 }
