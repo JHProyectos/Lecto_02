@@ -106,5 +106,10 @@
     "conversion": "Error converting PDF to audio. Please try again.",
     "unauthorized": "You are not authorized to perform this action.",
     "not_found": "The requested resource was not found."
-  }
+  },
+  "audio_player": {
+    "premium_feature": "Premium Feature",
+    "premium_feature_description": "Changing playback speed is a premium feature. Would you like to upgrade your subscription?",
+    "upgrade": "Upgrade"
+  },
 }
