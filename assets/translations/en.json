@@ -70,13 +70,12 @@
       "invalid_file_type": "Please select a valid PDF file"
     }
   },
-  "processing": {
+ "processing": {
     "title": "Processing PDF",
-    "processing_file": "Processing: {0}",
-    "progress_percentage": "{0}%",
-    "go_to_playback": "Go to playback",
-    "error_title": "Processing Error",
-    "error_message": "There was a problem processing the PDF file."
+    "message": "Your PDF is being converted to audio...",
+    "cancel_button": "Cancel",
+    "cancel_confirmation_title": "Cancel Processing?",
+    "cancel_confirmation_message": "Are you sure you want to cancel the processing? All progress will be lost."
   },
   "playback": {
     "title": "Audio Playback",
