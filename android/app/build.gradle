@@ -1,13 +1,10 @@
 // android/app/build.gradle
 // Configuración de compilación para la aplicación Android
 
-// Plugin para aplicaciones Android
 apply plugin: 'com.android.application'
-
-// Plugin para Kotlin (necesario para Flutter)
 apply plugin: 'kotlin-android'
 
-// Ruta al proyecto local.properties
+// Carga de propiedades locales
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -16,7 +13,7 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-// Configuración de la clave para firmar la aplicación
+// Configuración de firma
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -24,21 +21,27 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    // Versión del SDK de compilación
     compileSdkVersion 33
+    ndkVersion "25.1.8937393" // Versión específica del NDK
 
-    // Configuración predeterminada
     defaultConfig {
-        applicationId "com.example.lecto" // ID único de la aplicación
-        minSdkVersion 21                  // Versión mínima de Android soportada
-        targetSdkVersion 33               // Versión objetivo de Android
-        versionCode 1                     // Código de versión interno
-        versionName "1.0.0"              // Versión visible para usuarios
-        multiDexEnabled true             // Soporte para múltiples DEX
+        applicationId "com.example.lecto"
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    // Configuración de firma para release
+    // Configuraciones de firma para debug y release
     signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
         release {
             if (keystoreProperties.containsKey('storeFile')) {
                 keyAlias keystoreProperties['keyAlias']
@@ -49,23 +52,21 @@ android {
         }
     }
 
-    // Configuraciones de compilación
     buildTypes {
-        release {
-            // Habilitar minificación para reducir el tamaño del APK
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
         debug {
-            // Configuración para desarrollo
-            applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
             debuggable true
-            signingConfig signingConfigs.debug 
+            applicationIdSuffix ".debug"
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
-    // Configuración de Kotlin
+    // Configuraciones de Kotlin
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -75,22 +76,31 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // Configuraciones específicas para Flutter
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 }
 
-// Dependencias del proyecto
 dependencies {
     // Dependencias básicas de Android
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
 
-    // Dependencias para el manejo de PDFs
+    // Dependencias para el manejo de PDFs (solo si se necesita)
     implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
 
-    // Dependencias para audio
+    // Dependencias para audio (solo si se necesita)
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.7'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.7'
 
     // Soporte para múltiples DEX
     implementation 'androidx.multidex:multidex:2.0.1'
+
+    // Dependencias para pruebas
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
