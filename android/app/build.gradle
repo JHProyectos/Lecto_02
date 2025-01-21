@@ -1,4 +1,12 @@
-// Carga las propiedades locales, como la ruta del SDK de Flutter
+// Configuración de compilación para la aplicación Android
+
+// Plugin para aplicaciones Android
+apply plugin: 'com.android.application'
+
+// Plugin para Kotlin (necesario para Flutter)
+apply plugin: 'kotlin-android'
+
+// Ruta al proyecto local.properties
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -7,57 +15,80 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-// Verifica la existencia del SDK de Flutter y lo configura
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+// Configuración de la clave para firmar la aplicación
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-// Establece los valores predeterminados para la versión de la aplicación si no están configurados
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode', '1')
-def flutterVersionName = localProperties.getProperty('flutter.versionName', '1.0')
-
-// Aplicación de los complementos de Gradle para Android, Kotlin y Flutter
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
-    compileSdkVersion flutter.compileSdkVersion // Configura el SDK de compilación
-    ndkVersion flutter.ndkVersion // Configura la versión de NDK
+    // Versión del SDK de compilación
+    compileSdkVersion 33
 
-    compileOptions { // Configuración de compatibilidad de Java
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    // Configuración predeterminada
+    defaultConfig {
+        applicationId "com.example.lecto" // ID único de la aplicación
+        minSdkVersion 21                  // Versión mínima de Android soportada
+        targetSdkVersion 33               // Versión objetivo de Android
+        versionCode 1                     // Código de versión interno
+        versionName "1.0.0"              // Versión visible para usuarios
+        multiDexEnabled true             // Soporte para múltiples DEX
     }
 
-    kotlinOptions { // Configuración del compilador Kotlin
+    // Configuración de firma para release
+    signingConfigs {
+        release {
+            if (keystoreProperties.containsKey('storeFile')) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    }
+
+    // Configuraciones de compilación
+    buildTypes {
+        release {
+            // Habilitar minificación para reducir el tamaño del APK
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            // Configuración para desarrollo
+            applicationIdSuffix ".debug"
+            debuggable true
+        }
+    }
+
+    // Configuración de Kotlin
+    kotlinOptions {
         jvmTarget = '1.8'
     }
 
-    sourceSets { // Define las rutas de los archivos fuente
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
-    defaultConfig {
-        applicationId "com.example.lecto_01" // ID único de la aplicación
-        minSdkVersion flutter.minSdkVersion // Versión mínima de SDK soportada
-        targetSdkVersion flutter.targetSdkVersion // Versión objetivo del SDK
-        versionCode 2 // Incrementado para actualizaciones
-        versionName "1.0.1" // Actualizado para reflejar cambios
-    }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug // Configuración de firma (debe actualizarse para producción)
-        }
+    // Configuraciones de compilación
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
-flutter { // Configura la ubicación de los archivos fuente de Flutter
-    source '../..'
-}
+// Dependencias del proyecto
+dependencies {
+    // Dependencias básicas de Android
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
 
-dependencies { // Dependencias necesarias para la compilación
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // Dependencias para el manejo de PDFs
+    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
+
+    // Dependencias para audio
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.7'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.7'
+
+    // Soporte para múltiples DEX
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
