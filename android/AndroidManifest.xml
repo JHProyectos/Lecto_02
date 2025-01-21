@@ -1,1 +1,35 @@
-#
+// Configuración global de compilación para Android
+
+// Repositorios de dependencias
+buildscript {
+    repositories {
+        // Repositorio de Google
+        google()
+        // Repositorio central de Maven
+        mavenCentral()
+    }
+
+    // Dependencias necesarias para la compilación
+    dependencies {
+        // Plugin de Android Gradle
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        // Plugin de Kotlin
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
+    }
+}
+
+// Configuración de repositorios para todos los proyectos
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        // Repositorio JitPack para dependencias de GitHub
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+// Tarea para limpiar el proyecto
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
